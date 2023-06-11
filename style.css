@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+}
+#legend, #active_countries {
+    position: absolute;
+    right: 1em;
+    width: 300px;
+    overflow: auto;
+    background-color: #fff0;
+}
+#legend {
+    top: 1em;
+    height: 50vh;
+    opacity: .5;
+}
+#active_countries {
+    bottom: 1em;
+    height: 30vh;
+
+}
+#legend:hover,
+#active_countries:hover {
+    background-color: #fffa;
+    opacity: 1;
+}
+#legend span {
+    display: block;
+}
