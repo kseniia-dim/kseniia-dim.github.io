@@ -10,7 +10,7 @@ DEU;Germany;German, Sorbian, Dutch
 GRC;Greece;Greek
 HUN;Hungary;Hungarian
 IRL;Ireland;Irish
-ITA;Italy;Italian, Sardinian
+ITA;Italy;Italian, Sardinian, Ladinian
 LVA;Latvia;Latvian, Livonian
 LTU;Lithuania;Lithuanian
 MLT;Malta;Maltese
@@ -21,11 +21,10 @@ SVK;Slovakia;Slovakian
 SVN;Slovenia;Slovene
 ESP;Spain;Spanish, Catalan, Basque
 SWE;Sweden;Swedish
-RUS;Russia;Russian, Karelian, Mordvinian,  Dagestan, Ossetian, Wepsian, Wotian, Mari, Votyak, Udmurt, Chuvash, Tatar, Chechen-Ingush
+RUS;Russia;Russian, Karelian, Komi-Syrjanian, Mordvinian,  Dagestan, Ossetian, Wepsian, Wotian, Ludian, Mari, Votyak, Udmurt, Chuvash, Tatar, Chechen-Ingush
 GBR;United Kingdom;Scottish,  English
 BLR;Belarus;Byelorussian
-SRB;Serbia;Syrianian, Serbian
-MDA;Moldova;Moldovan
+SRB;Serbia;Serbian
 BIH;Bosnia and Herzegovina;Bosnian
 ALB;Albania;Albanian
 ISL;Iceland;Icelandic

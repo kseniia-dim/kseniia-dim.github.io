@@ -2,6 +2,7 @@ var ccode2feature = {};
 let motif = [];
 let ccode2lang = {};
 let lang2ccode = {};
+let country2ccode = {};
 let active_langs = {};
 let active_ccode = {};
 function onInputChange(e) {
@@ -12,12 +13,16 @@ function onInputChange(e) {
                 active_langs[lang].push(id);
             } else { // lang isn't selected yet
                 active_langs[lang] = [ id ];
-                var ccode = lang2ccode[lang][0];
-                if (active_ccode[ccode]?.length) { // country by code already selected (by different lang)
-                    active_ccode[ccode].push(lang);
-                } else { // country isn't selected
-                    active_ccode[ccode] = [ lang ];
-                    country_set_state(ccode, true);
+                if (!lang2ccode[lang])
+                    console.log(motif[id][0], ") ", lang);
+                else {
+                    var ccode = lang2ccode[lang][0];
+                    if (active_ccode[ccode]?.length) { // country by code already selected (by different lang)
+                        active_ccode[ccode].push(lang);
+                    } else { // country isn't selected
+                        active_ccode[ccode] = [ lang ];
+                        country_set_state(ccode, true);
+                    }
                 }
             }
         } else {
@@ -36,7 +41,7 @@ function onInputChange(e) {
     //;
 }
 function country_set_state(ccode, selected) {
-    console.log(ccode, selected);
+    //console.log(ccode, selected);
     if (ccode2feature[ccode]) {
         map.setFeatureState(ccode2feature[ccode], {"state": selected ? "selected" : "deselected"});
     }
@@ -50,7 +55,8 @@ function display_active_country(country, show) {
     } else
         active_countries.splice(active_countries.indexOf(country),1);
     var countries_block = document.getElementById("active_countries");
-    countries_block.innerText = (active_countries.length?"("+active_countries.length+") ":"") + active_countries.join(", ");
+    var countries_w_langs = active_countries.map(c => `${c} (${active_ccode[country2ccode[c]].join(", ")})`);
+    countries_block.innerText = (active_countries.length? active_countries.length+" - ":"") + countries_w_langs.join(", ");
 }
 
 fetch("./motifs_to_langs.csv")
@@ -88,6 +94,7 @@ fetch("./countries_langs.csv")
             var country = cols[1].trim();
             var langs = cols[2].split(",").map(e => e.trim());
             ccode2lang[ccode] = [country, langs];
+            country2ccode[country] = ccode;
             langs.forEach(e => {
                 if (lang2ccode[e])
                     alert("redundant language ", e, "in 'countries_langs.csv line: ", line[i]);
