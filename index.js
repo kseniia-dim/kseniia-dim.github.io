@@ -74,6 +74,10 @@ fetch("./motifs_to_langs.csv")
     for(let i = 0; lines[i] && i < lines.length; i++) {
             var cols = lines[i].split(";");
             motif[i] = cols.map(e => e.trim());
+            console.log(motif[i][1]);
+            if (motif[i][1][0] == '"' && motif[i][1].at(-1) == '"') {
+                motif[i][1] = motif[i][1].slice(1,-1).replaceAll('""','"');
+            }
             motif[i][2] = motif[i][2].split(",").map(e => e.trim());
             var _span = span.cloneNode(true);
             _span.children[0].id = "in-"+i;
