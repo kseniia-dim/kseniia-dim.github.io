@@ -69,9 +69,9 @@
             "paint": {
                 "fill-color": [
                     "match",["feature-state","state"]
-                    ,"selected","#FFAAAA"
-                    ,"deselected","#BBFFBB"
-                    ,"#CCCCCC"
+                    ,"selected","#DDFFDD"
+                    ,"deselected","#DDDDDD"
+                    ,"#BBBBBB"
                 ]
             },
             "filter": [
@@ -121,6 +121,48 @@
                         ]
                     ]
                 }
+            },
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round",
+                "visibility": "visible"
+            },
+            "source": "maplibre",
+            "maxzoom": 24,
+            "source-layer": "countries"
+        },
+        {
+            "id": "countries-hover",
+            "type": "line",
+            "paint": {
+                "line-color": "rgba(64, 64, 0, 1)",
+                "line-width": {
+                    "stops": [
+                        [
+                            1,
+                            1
+                        ],
+                        [
+                            6,
+                            2
+                        ],
+                        [
+                            14,
+                            6
+                        ],
+                        [
+                            22,
+                            12
+                        ]
+                    ]
+                },
+                "line-dasharray": [1, 3],
+                "line-opacity": [
+                    "case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    1,
+                    0
+                ]
             },
             "layout": {
                 "line-cap": "round",

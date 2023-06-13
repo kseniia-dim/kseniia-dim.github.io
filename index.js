@@ -40,6 +40,29 @@ function onInputChange(e) {
     //var tgl_countries
     //;
 }
+var hovered_countries = [];
+function hover_motif(e) {
+    if (e.type == "mouseleave") {
+        hovered_countries.forEach(ccode => {
+            map.setFeatureState(ccode2feature[ccode], {"hover": false});
+        });
+        hovered_countries = [];
+    } else {
+        var id = e.target.getAttribute("data-id");
+        var new_hovered_countries = [];
+        motif[id][2].forEach(lang => {
+            var ccode = lang2ccode[lang][0];
+            if (new_hovered_countries.indexOf(ccode) == -1)
+                new_hovered_countries.push(ccode);
+        });
+        new_hovered_countries.forEach(ccode => {
+            map.setFeatureState(ccode2feature[ccode], {"hover": true});
+        });
+        hovered_countries = new_hovered_countries;
+    }
+    //console.log(e.type, " ", id, hovered_countries);
+
+}
 function country_set_state(ccode, selected) {
     //console.log(ccode, selected);
     if (ccode2feature[ccode]) {
@@ -58,7 +81,6 @@ function display_active_country(country, show) {
     var countries_w_langs = active_countries.map(c => `${c} (${active_ccode[country2ccode[c]].join(", ")})`);
     countries_block.innerText = (active_countries.length? active_countries.length+" - ":"") + countries_w_langs.join(", ");
 }
-
 fetch("./motifs_to_langs.csv")
     .then( (response) => response.text() )
     .then( function(text) {
@@ -74,12 +96,15 @@ fetch("./motifs_to_langs.csv")
     for(let i = 0; lines[i] && i < lines.length; i++) {
             var cols = lines[i].split(";");
             motif[i] = cols.map(e => e.trim());
-            console.log(motif[i][1]);
+            //console.log(motif[i][1]);
             if (motif[i][1][0] == '"' && motif[i][1].at(-1) == '"') {
                 motif[i][1] = motif[i][1].slice(1,-1).replaceAll('""','"');
             }
             motif[i][2] = motif[i][2].split(",").map(e => e.trim());
             var _span = span.cloneNode(true);
+            _span.onmouseenter = hover_motif;
+            _span.onmouseleave = hover_motif;
+            _span.setAttribute("data-id",i);
             _span.children[0].id = "in-"+i;
             _span.children[0].onchange = onInputChange;
             _span.children[0].setAttribute("data-id",i);
