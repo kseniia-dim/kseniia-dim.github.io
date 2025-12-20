@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./tailwind4.js" crossorigin="anonymous"></script>
+    <style type="text/tailwindcss">
+      .category-btn.active {
+        @apply bg-rose-400/90 text-white
+          cursor-pointer
+          shadow-xl;
+      }
+
+      .card-btn {
+        &.category-active {
+          @apply static size-[100px];
+        }
+
+        &.inactive {
+          @apply bg-neutral-100/90 hover:bg-neutral-100/90
+            text-neutral-500
+            shadow-none
+            cursor-not-allowed;
+        }
+      }
+
+
+      #portal {
+        &.active {
+          @apply w-[100vw] h-[90vh]
+            px-[20vw] py-[25vh]
+            /* rounded-none */
+            shadow-xl
+            shadow-blue-200/90
+            opacity-100
+            !top-[5vh]
+            !left-0;
+
+            .quiz-text {
+              @apply text-[32px];
+            }
+        }
+
+        .quiz-text {
+          @apply text-blue-700
+            transition-all
+            duration-700
+            justify-center
+            mx-auto
+            text-[1px]
+            text-center
+            opacity-0
+            ;
+
+          &.answer {
+            @apply text-indigo-700 cursor-pointer;
+            
+            &:hover {
+              @apply underline;
+            }
+
+            &.wrong {
+              @apply text-red-500;
+            }
+            &.correct {
+              @apply text-green-400;
+            }
+          }
+
+          &.active {
+            @apply opacity-100;
+          }
+        }
+      }
+    </style>
+    <script type="module" src="./script.js" crossorigin="anonymous"></script>
+  </head>
+  <body class="
+  bg-[url(./bg.jpg)] bg-cover bg-fixed
+  mx-10 my-5 bg-orange-100/90 select-none">
+    <div class="hidden">
+      <input id="input" type="file" />
+      <button id="default-input">По-умолчанию</button>
+    </div>
+    <div class="mb-5 mx-auto flex max-w-[80vw]">
+      <div class="grow"></div>
+      <div id="categories-container" class="flex flex-wrap gap-2">
+        <button class="category-sample hidden
+          category-btn
+          rounded-md px-3 py-1
+          outline-1 outline-stone-600/90
+          shadow-md shadow-stone-400/90
+          bg-rose-100/90 hover:bg-rose-200/90"
+        >
+          Пример категории
+        </button>
+      </div>
+      <div class="grow"></div>
+    </div>
+    <section id="cards-container" class="flex flex-wrap gap-10 mx-[100px] relative">
+      <button class="card-sample hidden card-btn
+        absolute size-0 top-0 left-0 
+        overflow-hidden
+        transition-all duration-700
+        outline-1 outline-stone-500/90
+        rounded-xl
+        bg-amber-100/90
+        hover:bg-amber-300/90
+        hover:shadow-xl
+        shadow-indigo-100/90
+        text-center text-[50px]
+        cursor-pointer"
+      >
+        0
+      </button>
+    </section>
+
+    <div id="portal" class="
+      fixed size-0
+      top-[50vh] left-[50vw]
+      rounded-full
+      opacity-0
+      transition-all
+      duration-700
+      grid grid-cols-1
+      place-content-center
+      bg-white/80
+      bg-radial from-black/10 from-40% to-white
+      text-blue-700
+    ">
+      <button id="lang" class="
+      absolute top-0 right-0
+      size-[50px] rounded-full
+      text-blue-700
+      bg-white/80
+      text-[20px]
+      ">
+        Ita
+      </button>
+      <span id="question" class="quiz-text active"></span>
+      <span id="answer1" class="quiz-text answer"></span>
+      <span id="answer2" class="quiz-text answer"></span>
+      <span id="answer3" class="quiz-text answer"></span>
+      <span id="answer4" class="quiz-text answer"></span>
+    </div>
+  </body>
+</html>
