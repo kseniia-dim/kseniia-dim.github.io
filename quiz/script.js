@@ -295,8 +295,7 @@ class App {
         }
 
         this.characters =
-            this.questionEl.innerText.length
-            + this.answerEls.map((el) => el.innerText.length)
+            this.quizTextEls.map((el) => el.innerText)
                 .join('').length
         
         this.setQuizFontSize()
@@ -310,10 +309,11 @@ class App {
         let viewHeight = document.documentElement.clientHeight
         let quizWidth = viewWidth * .8
         let quizHeight = viewHeight * .85
-        let maxBaseChars = (quizWidth / this.quizCharW) * (quizHeight / this.quizCharH)
-        let charsRatio = maxBaseChars / this.characters 
+        let maxBaseChars = (quizWidth / this.quizCharW - 1) * (quizHeight / this.quizCharH - 1)
+        // let optionCountRatio = 1 - 0.15 * this.optionCount
+        let charsRatio = (maxBaseChars / this.characters)// * optionCountRatio 
 
-        console.log([ this.characters, maxBaseChars, charsRatio ])
+        // console.log([ this.characters, maxBaseChars, optionCountRatio, charsRatio ])
         let style = charsRatio < 1
             ? `font-size: ${this.qiuzFontSize*charsRatio}px !important;`
             : ''
@@ -363,8 +363,9 @@ class App {
 
         if (this.optionCount <= 1 && this.optionsHidden) {
             evt.stopPropagation()
-            this.answered = true
             this.revealOptions()
+            this.selectOption(evt, 1)
+            this.answered = true
         }
     }
     
@@ -377,6 +378,9 @@ class App {
         this.answered = true
 
         let rightNum = +this.csv.get(this.curQuestionId, "правильный ответ")
+        rightNum = rightNum ? rightNum : 1
+
+        // console.log([ num, rightNum, this.csv.get(this.curQuestionId, "правильный ответ") ])
         if (num !== rightNum) {
             this.answerEls[num-1].classList.add('wrong')
         }
