@@ -27,18 +27,22 @@
 
       #portal {
         &.active {
-          @apply w-[100vw] h-[90vh]
-            px-[20vw] py-[25vh]
-            /* rounded-none */
-            shadow-xl
-            shadow-blue-200/90
+          @apply /* rounded-none */
             opacity-100
+            w-[100vw] h-[90vh]
             !top-[5vh]
             !left-0;
 
-            .quiz-text {
-              @apply text-[32px];
-            }
+          #portal-container {
+            @apply size-full
+              px-[20vw] py-[25vh]
+              shadow-xl
+              shadow-blue-200/90;
+          }
+
+          .quiz-text {
+            @apply text-[32px];
+          }
         }
 
         .quiz-text {
@@ -48,6 +52,7 @@
             justify-center
             mx-auto
             text-[1px]
+            leading-none
             text-center
             opacity-0
             ;
@@ -115,33 +120,46 @@
       </button>
     </section>
 
+    <span id="char-sample" class="
+    fixed -z-100 top-0 lef-0 pointer-events-none
+    text-[32px] opacity-0"
+    >S</span>
     <div id="portal" class="
       fixed size-0
       top-[50vh] left-[50vw]
-      rounded-full
       opacity-0
       transition-all
       duration-700
-      grid grid-cols-1
-      place-content-center
-      bg-white/80
-      bg-radial from-black/10 from-40% to-white
       text-blue-700
     ">
-      <button id="lang" class="
-      absolute top-0 right-0
-      size-[50px] rounded-full
-      text-blue-700
-      bg-white/80
-      text-[20px]
+      <div id="portal-container" class="
+        overflow-hidden rounded-full
+        bg-white/80
+        bg-radial from-black/10 from-40% to-white
+        grid grid-cols-1
+        place-content-center
+        transition-all
+        duration-700
       ">
-        Ita
-      </button>
-      <span id="question" class="quiz-text active"></span>
-      <span id="answer1" class="quiz-text answer"></span>
-      <span id="answer2" class="quiz-text answer"></span>
-      <span id="answer3" class="quiz-text answer"></span>
-      <span id="answer4" class="quiz-text answer"></span>
+        <button id="lang" class="
+          absolute top-[5vh] right-0 
+          size-[50px] rounded-full
+          text-blue-700
+          bg-white/80
+          text-[20px]
+        ">
+          Ita
+        </button>
+        <div id="quiz" class="
+          flex flex-col gap-2
+        ">
+          <span id="question" class="quiz-text active"></span>
+          <span id="answer1" class="quiz-text answer"></span>
+          <span id="answer2" class="quiz-text answer"></span>
+          <span id="answer3" class="quiz-text answer"></span>
+          <span id="answer4" class="quiz-text answer"></span>
+        </div>
+      </div>
     </div>
   </body>
 </html>

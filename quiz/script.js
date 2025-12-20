@@ -23,7 +23,13 @@ class Csv {
                 line.trim()
                     .split(this.separator)
                     .map(
-                        (cellv) => cellv.trim()
+                        (cell) => {
+                            cell = cell.trim()
+                            if (cell[0] == '"' && cell[cell.length-1] == '"') {
+                                cell = cell.slice(1,-1).replace('""','"')
+                            }
+                            return cell
+                        }
                     )
             )
         
@@ -36,7 +42,7 @@ class Csv {
 
         this.setCols(data)
 
-        console.log(this.colNames, this.rows, this.cols)
+        // console.log(this.colNames, this.rows, this.cols)
     }
 
     /** @param {string[]} header */
@@ -96,16 +102,29 @@ class App {
     categoriesEl = document.getElementById('categories-container')
     cardsEl = document.getElementById('cards-container')
     portalEl = document.getElementById('portal')
+    charSampleEl = document.getElementById('char-sample')
+    quizEl = document.getElementById('quiz')
     questionEl = document.getElementById('question')
     answerEl1 = document.getElementById('answer1')
     answerEl2 = document.getElementById('answer2')
     answerEl3 = document.getElementById('answer3')
     answerEl4 = document.getElementById('answer4')
     answerEls = []
+    quizCharW = 32
+    quizCharH = 32
+
     categoryQuestionIdxs = {}
 
     constructor() {
         this.answerEls = [
+            this.answerEl1,
+            this.answerEl2,
+            this.answerEl3,
+            this.answerEl4,
+        ]
+
+        this.quizTextEls = [
+            this.questionEl,
             this.answerEl1,
             this.answerEl2,
             this.answerEl3,
@@ -120,6 +139,9 @@ class App {
                     this.initEvents()
                 }
             )
+        
+        this.quizCharW = this.charSampleEl.clientWidth
+        this.quizCharH = this.charSampleEl.clientHeight
     }
 
     render() {
@@ -133,6 +155,7 @@ class App {
     }
 
     initEvents() {
+        window.addEventListener("resize", () => this.setQuizFontSize())
         this.portalEl.onclick = (e) => this.onPortalClick(e)
         this.questionEl.onclick = (e) => this.onQuestionClick(e)
 
@@ -231,9 +254,10 @@ class App {
     }
 
     optionCount = 0
+    characters = 0
     setTexts() {
         this.optionCount = 0
-        let optionLetter = ['A. ','B. ','C. ','D. ']
+        const optionLetter = ['A. ','B. ','C. ','D. ']
         if (this.curLangItalian) {
             let question = this.csv.get(this.curQuestionId, "domanda")
             question = question ? question : this.csv.get(this.curQuestionId, "вопрос")
@@ -269,6 +293,32 @@ class App {
                 }
             })
         }
+
+        this.characters =
+            this.questionEl.innerText.length
+            + this.answerEls.map((el) => el.innerText.length)
+                .join('').length
+        
+        this.setQuizFontSize()
+    }
+
+    // #portal.active .quiz-text
+    qiuzFontSize = 32
+    defaultMinChars = 500
+    setQuizFontSize() {
+        let viewWidth = document.documentElement.clientWidth
+        let viewHeight = document.documentElement.clientHeight
+        let quizWidth = viewWidth * .8
+        let quizHeight = viewHeight * .85
+        let maxBaseChars = (quizWidth / this.quizCharW) * (quizHeight / this.quizCharH)
+        let charsRatio = maxBaseChars / this.characters 
+
+        console.log([ this.characters, maxBaseChars, charsRatio ])
+        let style = charsRatio < 1
+            ? `font-size: ${this.qiuzFontSize*charsRatio}px !important;`
+            : ''
+        
+        this.quizTextEls.forEach(el => el.setAttribute('style', style))
     }
 
     optionsHidden = true
@@ -294,7 +344,7 @@ class App {
         }
         evt.stopPropagation()
 
-        if (this.optionsHidden && this.optionCount !== 1) {
+        if (this.optionsHidden && this.optionCount > 1) {
             this.revealOptions()
         }
     }
@@ -311,7 +361,7 @@ class App {
             return
         }
 
-        if (this.optionCount === 1 && this.optionsHidden) {
+        if (this.optionCount <= 1 && this.optionsHidden) {
             evt.stopPropagation()
             this.answered = true
             this.revealOptions()
@@ -338,14 +388,6 @@ class App {
         this.answerEls.forEach((el) => el.classList.remove('correct', 'wrong', 'active'))
         this.portalEl.classList.remove('active')
         this.curQuestionEl.classList.add('inactive')
-        // if (this.portalShowsQuestion) {
-        //     this.questionEl.classList.remove('active')
-        //     this.answerEl.classList.add('active')
-        //     this.portalShowsQuestion = false
-        // } else {
-        //     this.answerEl.classList.remove('active')
-        //     this.portalEl.classList.remove('active')
-        // }
     }
 }
 
