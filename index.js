@@ -29,26 +29,28 @@ export default class {
                 span.appendChild(label);
                 let legend = document.getElementById("legend");
                 let lines = text.split(/\r?\n/);
-            for(let i = 0; lines[i] && i < lines.length; i++) {
-                let cols = lines[i].split(";");
-                this.motif[i] = cols.map(e => e.trim());
-                //console.log(this.motif[i][1]);
-                if (this.motif[i][1][0] == '"' && this.motif[i][1].at(-1) == '"') {
-                    this.motif[i][1] = this.motif[i][1].slice(1,-1).replaceAll('""','"');
+
+                for(let i = 0; lines[i] && i < lines.length; i++) {
+                    let cols = lines[i].split(";");
+                    this.motif[i] = cols.map(e => e.trim());
+                    //console.log(this.motif[i][1]);
+                    if (this.motif[i][1][0] == '"' && this.motif[i][1].at(-1) == '"') {
+                        this.motif[i][1] = this.motif[i][1].slice(1,-1).replaceAll('""','"');
+                    }
+                    this.motif[i][2] = this.motif[i][2].split(",").map(e => e.trim());
+                    let _span = span.cloneNode(true);
+                    _span.onmouseenter = (e) => this.hover_motif(e);
+                    _span.onmouseleave = (e) => this.hover_motif(e);
+                    _span.setAttribute("data-id",i);
+                    _span.children[0].id = "in-"+i;
+                    _span.children[0].onchange = (e) => this.onInputChange(e);
+                    _span.children[0].setAttribute("data-id",i);
+                    _span.children[1].htmlFor = _span.children[0].id;
+                    _span.children[1].innerHTML = this.motif[i][0] + ' ' + this.motif[i][1];
+                    legend.appendChild(_span);
                 }
-                this.motif[i][2] = this.motif[i][2].split(",").map(e => e.trim());
-                let _span = span.cloneNode(true);
-                _span.onmouseenter = (e) => this.hover_motif(e);
-                _span.onmouseleave = (e) => this.hover_motif(e);
-                _span.setAttribute("data-id",i);
-                _span.children[0].id = "in-"+i;
-                _span.children[0].onchange = (e) => this.onInputChange(e);
-                _span.children[0].setAttribute("data-id",i);
-                _span.children[1].htmlFor = _span.children[0].id;
-                _span.children[1].innerHTML = this.motif[i][0] + ' ' + this.motif[i][1];
-                legend.appendChild(_span);
             }
-        });
+        );
 
         await fetch("./countries_langs.csv")
             .then( (response) => response.text() )
@@ -101,7 +103,6 @@ export default class {
                     }
                 }
             }
-        
         })
         //let tgl_countries
         //;

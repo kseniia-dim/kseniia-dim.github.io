@@ -3,14 +3,20 @@
   <head>
     <title>Motifs map</title>
     <script type="module" src="index.js"></script>
-    <script src='https://unpkg.com/maplibre-gl@3.0.1/dist/maplibre-gl.js'></script>
-    <link href='https://unpkg.com/maplibre-gl@3.0.1/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src='https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js'></script>
+    <link href='https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css' rel='stylesheet' />
     <link rel="stylesheet" type="text/css" href="./style.css" />
   </head>
 <body>
 <div id="map"></div>
 <div id="legend"></div>
 <div id="active_countries"></div>
+<!-- <pre contenteditable="plaintext-only">
+  target.addEventListener("paste", (event) => {
+    event.preventDefault();
+  
+    let paste = (event.clipboardData || window.clipboardData).getData("text");
+</pre> -->
 
 <script type="module">
 import LibClass from "./index.js"
@@ -25,18 +31,17 @@ var map = new maplibregl.Map({
 var lib = new LibClass(map);
 
 map.on("load",function(e){
-  console.log(2);
-    for ( const f of map.querySourceFeatures("maplibre",{sourceLayer:"countries"}) ){
-      if (lib.ccode2lang[f.properties.ADM0_A3]) {
-        lib.ccode2feature[f.properties.ADM0_A3] = {id:f.id,source:"maplibre",sourceLayer:"countries"};
-        map.setFeatureState(lib.ccode2feature[f.properties.ADM0_A3], {"state":"deselected"});
-        //console.log(f.properties.NAME);
-      } else {
-        //console.log(f.properties.NAME);
-      }
+  // setInterval(async ()=>console.log(await navigator.clipboard.writeText()), 5000);
+  for ( const f of map.querySourceFeatures("maplibre",{sourceLayer:"countries"}) ){
+    if (lib.ccode2lang[f.properties.ADM0_A3]) {
+      lib.ccode2feature[f.properties.ADM0_A3] = {id:f.id,source:"maplibre",sourceLayer:"countries"};
+      map.setFeatureState(lib.ccode2feature[f.properties.ADM0_A3], {"state":"deselected"});
+      //console.log(f.properties.NAME);
+    } else {
+      //console.log(f.properties.NAME);
     }
   }
-);
+});
 // map.on('click', function(e) {
 // console.log(e);
 // var f = map.queryRenderedFeatures(e.point, { layers: ['countries-fill'] });
