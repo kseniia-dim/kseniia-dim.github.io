@@ -1,0 +1,91 @@
+<!doctype html>
+<html class="size-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../assets/tailwind4.js" crossorigin="anonymous"></script>
+    <style type="text/tailwindcss">
+        .advent-item {
+            @apply
+                cursor-not-allowed
+                size-[150px]
+                rounded-[5px]
+                border-black
+                border-t-[0]
+                border-b-[4px]
+                border-x-[4px]
+                shadow-white/75
+                shadow-none
+                transition-all
+                duration-400;
+
+            &.active {
+                @apply
+                    cursor-default
+                    border-white
+                    border-b-[2px]
+                    border-x-[2px];
+
+                &:hover {
+                    @apply shadow-lg;
+                }
+            }
+            &.open {
+                @apply
+                    cursor-pointer
+                    /* bg-radial
+                    from-white from-60%
+                    to-[#aaa] to-90% */
+                    border-[16px]
+                    /* bg-[#eee]
+                    border-b-[#fff]
+                    border-x-[#ccc]
+                    border-t-[#aaa] */
+                    bg-[#568cf0]
+                    border-b-[#5c95ff]
+                    border-x-[#4a79cf]
+                    border-t-[#3f67b0]
+                    ;
+            }
+
+            p {
+                @apply text-white
+                    size-1/2
+                    text-[2px]
+                    text-wrap
+                    wrap-break-word
+                    overflow-hidden
+                    ;
+            }
+        }
+    </style>
+    <script type="module" src="./script.js" crossorigin="anonymous"></script>
+  </head>
+  <body class="
+  size-full
+  p-[32px]
+  bg-gradient-to-b
+    from-[#787] from-5%
+    via-[#565] via-20%
+    to-[#232] to-85%
+  ">
+    <div class="hidden">
+      <input id="input" type="file" />
+      <button id="default-input">По-умолчанию</button>
+    </div>
+    <div class="advent-container
+    size-full
+    rounded-[10px]
+    bg-[url(./bg2.png)] bg-repeat
+    p-[32px]
+    shadow-black shadow-lg
+    flex gap-[16px]
+    ">
+        <div class="advent-item open"></div>
+        <div class="advent-item active" onclick="let e = arguments[0]; e.target.classList.contains('open') ? e.target.classList.remove('open') : e.target.classList.add('open')">
+            <p>here's some example</p>
+        </div>
+        <div class="advent-item advent-item-sample"></div>
+    </div>
+  </body>
+</html>
