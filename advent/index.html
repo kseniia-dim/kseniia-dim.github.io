@@ -1,13 +1,20 @@
 <!doctype html>
 <html class="size-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="../assets/tailwind4.js" crossorigin="anonymous"></script>
-    <style type="text/tailwindcss">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="../assets/tailwind4.js" crossorigin="anonymous"></script>
+        <style type="text/tailwindcss">
+        #advent-items {
+            .advent-item-link {
+                @apply pointer-events-none;
+            }
+        }
         .advent-item {
             @apply
                 cursor-not-allowed
+                min-w-[150px]
+                min-h-[150px]
                 size-[150px]
                 rounded-[5px]
                 border-black
@@ -17,7 +24,12 @@
                 shadow-white/75
                 shadow-none
                 transition-all
-                duration-400;
+                duration-400
+                
+                grid grid-cols-1
+                place-items-center
+                place-content-center
+                ;
 
             &.active {
                 @apply
@@ -26,10 +38,11 @@
                     border-b-[2px]
                     border-x-[2px];
 
-                &:hover {
+                &:not(.open):hover {
                     @apply shadow-lg;
                 }
             }
+
             &.open {
                 @apply
                     cursor-pointer
@@ -46,32 +59,81 @@
                     border-x-[#4a79cf]
                     border-t-[#3f67b0]
                     ;
+                
+                .advent-item-date {
+                    @apply hidden;
+                }
             }
 
-            p {
-                @apply text-white
-                    size-1/2
-                    text-[2px]
+            &:not(.open) {
+                .advent-item-link {
+                    @apply hidden;
+                }
+
+            }
+
+            .advent-item-date {
+                @apply text-white text-center text-wrap text-[32px];
+            }
+
+            .advent-item-link {
+                @apply
+                    text-white
+                    text-center
+                    text-[3px]
                     text-wrap
                     wrap-break-word
                     overflow-hidden
+                    cursor-pointer
                     ;
+                
+                &:hover {
+                    @apply underline;
+                }
             }
         }
-    </style>
-    <script type="module" src="./script.js" crossorigin="anonymous"></script>
-  </head>
-  <body class="
-  size-full
-  p-[32px]
-  bg-gradient-to-b
-    from-[#787] from-5%
-    via-[#565] via-20%
-    to-[#232] to-85%
+        
+        #portal {
+            &.active {
+                @apply /* rounded-none */
+                    opacity-100
+                    w-[100vw] h-[100vh]
+                    !top-[0]
+                    !left-0;
+
+                #portal-container {
+                    @apply size-full;
+                }
+            }
+
+            #portal-container {
+                .advent-item {
+                    @apply
+                        size-[50vh] 
+                        min-w-[75vh]
+                        min-h-[75vh]
+                        ;
+                    
+                    .advent-item-link {
+                        @apply text-[40px];
+                    }
+                }
+            }
+        }
+        </style>
+        <script type="module" src="./script.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="
+    size-full
+    p-[32px]
+    bg-gradient-to-b
+        from-[#787] from-5%
+        via-[#565] via-20%
+        to-[#232] to-85%
   ">
     <div class="hidden">
-      <input id="input" type="file" />
-      <button id="default-input">По-умолчанию</button>
+        <input id="input" type="file" />
+        <button id="default-input">По-умолчанию</button>
     </div>
     <div class="advent-container
     size-full
@@ -79,13 +141,39 @@
     bg-[url(./bg2.png)] bg-repeat
     p-[32px]
     shadow-black shadow-lg
-    flex gap-[16px]
+    flex flex-col gap-[20px]
     ">
-        <div class="advent-item open"></div>
-        <div class="advent-item active" onclick="let e = arguments[0]; e.target.classList.contains('open') ? e.target.classList.remove('open') : e.target.classList.add('open')">
-            <p>here's some example</p>
+        <p class="advent-container-title
+        text-white text-[32px] text-center
+        ">
+            9 Giorni delle Feste in Musica
+        </p>
+        <div id="advent-items" class="
+        flex gap-[16px] flex-wrap">
+            <div class="advent-item advent-item-sample hidden">
+                <span class="advent-item-date"></span>
+            </div>
         </div>
-        <div class="advent-item advent-item-sample"></div>
+    </div>
+
+    <div id="portal" class="
+    fixed size-0
+    top-[50vh] left-[50vw]
+    opacity-0
+    transition-all
+    duration-700
+    text-white
+    ">
+        <div id="portal-container" class="
+        overflow-hidden size-full
+        bg-[url(./bg2.png)] bg-repeat
+        grid grid-cols-1
+        place-items-center
+        transition-all
+        duration-700
+        ">
+            <div class="absolute [url(./bg2.png)] bg-cover size-[500%] -z-10"></div>
+        </div>
     </div>
   </body>
 </html>
