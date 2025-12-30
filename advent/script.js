@@ -16,6 +16,9 @@ class App {
 
     dateItemIdxs = {}
 
+    /** @prop {string[]} openedDates */
+    openedDates = []
+
     constructor() {
         this.csv = new Csv
         this.csv.fetchData("./list.csv")
@@ -25,6 +28,8 @@ class App {
                     this.initEvents()
                 }
             )
+        
+        this.openedDates = window.localStorage.getItem('opened') ?? [] 
     }
 
     render() {
@@ -85,6 +90,10 @@ class App {
                 let jsDate = new Date( this.csv.get(this.dateItemIdxs[date][0], "data") )
                 if (this.isPastDate(jsDate)) {
                     el.classList.add('active')
+
+                    if (this.openedDates.includes(date)) {
+                        el.classList.add('open')
+                    }
                 }
 
                 el.onclick = (evt) => this.selectItem(
@@ -124,6 +133,8 @@ class App {
 
         if (!element.classList.contains('open')) {
             element.classList.add('open')
+            this.openedDates.push(date)
+            window.localStorage.setItem('opened', this.openedDates)
             return
         }
 
