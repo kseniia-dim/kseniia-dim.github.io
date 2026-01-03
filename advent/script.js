@@ -21,7 +21,7 @@ class App {
 
     constructor() {
         this.csv = new Csv
-        this.csv.fetchData("./list.csv")
+        this.csv.fetchData("./list.csv?2")
             .then(
                 () => {
                     this.render()
@@ -29,7 +29,7 @@ class App {
                 }
             )
         
-        this.openedDates = window.localStorage.getItem('opened') ?? [] 
+        this.openedDates = JSON.parse(window.localStorage.getItem('opened') ?? '[]')
     }
 
     render() {
@@ -87,7 +87,7 @@ class App {
                 el.children[0].innerText =
                     this.csv.get(this.dateItemIdxs[date][0], "dataTitolo")
 
-                let jsDate = new Date( this.csv.get(this.dateItemIdxs[date][0], "data") )
+                let jsDate = new Date( date + ' 00:00:00' )
                 if (this.isPastDate(jsDate)) {
                     el.classList.add('active')
 
@@ -134,7 +134,7 @@ class App {
         if (!element.classList.contains('open')) {
             element.classList.add('open')
             this.openedDates.push(date)
-            window.localStorage.setItem('opened', this.openedDates)
+            window.localStorage.setItem('opened', JSON.stringify(this.openedDates))
             return
         }
 
