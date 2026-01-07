@@ -21,7 +21,7 @@ class App {
 
     constructor() {
         this.csv = new Csv
-        this.csv.fetchData("./list.csv?3")
+        this.csv.fetchData("./list.csv?4")
             .then(
                 () => {
                     this.render()
